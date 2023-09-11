@@ -21,7 +21,8 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.jechatinashe7.res4u"
     },
     "web": {
       "favicon": "./assets/favicon.png"
