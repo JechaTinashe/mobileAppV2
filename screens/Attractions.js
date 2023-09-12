@@ -27,7 +27,7 @@ const  Attractions = () =>  {
       longitudeDelta: 0.0421,
     });
 
-    console.log(location.coords.latitude, location.coords.longitude);
+   
   };
 
   const toggleMapType = () => {
