@@ -104,12 +104,12 @@ const Discover = () => {
                     <FontAwesome name="university" size={30} color="#f9193e" />
                     <Text style={styles.circleButtonText}>Attractions</Text>
                 </TouchableOpacity>
-                <TouchableOpacity
+                {/* <TouchableOpacity
                     style={styles.circleButton}
                     onPress={() => navigation.navigate('ChatPage')}>
                     <FontAwesome name="comments" size={30} color="#f9193e" />
                     <Text style={styles.circleButtonText}>Chat</Text>
-                </TouchableOpacity>
+                </TouchableOpacity> */}
                 <TouchableOpacity
                     style={styles.circleButton}
                     onPress={() => Linking.openURL('www.google.com')}>
