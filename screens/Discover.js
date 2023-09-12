@@ -13,7 +13,7 @@ import {
 import { useNavigation } from '@react-navigation/native';
 import { FontAwesome } from '@expo/vector-icons';
 import { collection, getDocs, query, orderBy, limit, startAfter } from 'firebase/firestore/lite';
-
+import { Avatar } from '../assets';
 import { db } from '../FirebaseConfig/Firebase';
 
 const Discover = () => {
@@ -21,8 +21,8 @@ const Discover = () => {
 
   const [isLoading, setLoading] = useState(false);
   const [isReloading, setReloading] = useState(false);
-  const RequestsRef = collection(db, 'Tbl_Residences');
-  const [Requests, setRequests] = useState([]);
+  const requestsRef = collection(db, 'Tbl_Residences');
+  const [requests, setRequests] = useState([]);
   const [lastDoc, setLastDoc] = useState(null);
 
   useEffect(() => {
@@ -31,15 +31,15 @@ const Discover = () => {
 
   const getRequests = async () => {
     setLoading(true);
-    const Snapshot = await getDocs(query(RequestsRef, orderBy('Pricing', 'desc'), limit(5)));
+    const snapshot = await getDocs(query(requestsRef, orderBy('Pricing', 'desc'), limit(5)));
 
-    if (!Snapshot.empty) {
+    if (!snapshot.empty) {
       let newRequests = [];
 
-      setLastDoc(Snapshot.docs[Snapshot.docs.length - 1]);
+      setLastDoc(snapshot.docs[snapshot.docs.length - 1]);
 
-      for (let i = 0; i < Snapshot.docs.length; i++) {
-        newRequests.push(Snapshot.docs[i].data());
+      for (let i = 0; i < snapshot.docs.length; i++) {
+        newRequests.push(snapshot.docs[i].data());
       }
 
       setRequests(newRequests);
@@ -53,14 +53,14 @@ const Discover = () => {
   const getMoreRequests = async () => {
     setLoading(true);
     if (lastDoc) {
-      let Snapshot = await getDocs(
-        query(RequestsRef, orderBy('Pricing', 'desc'), startAfter(lastDoc.data().CreatedOn), limit(5))
+      let snapshot = await getDocs(
+        query(requestsRef, orderBy('Pricing', 'desc'), startAfter(lastDoc.data().CreatedOn), limit(5))
       );
-      if (!Snapshot.empty) {
-        setLastDoc(Snapshot.docs[Snapshot.docs.length - 1]);
+      if (!snapshot.empty) {
+        setLastDoc(snapshot.docs[snapshot.docs.length - 1]);
 
-        for (let i = 0; i < Snapshot.docs.length; i++) {
-          Requests.push(Snapshot.docs[i].data());
+        for (let i = 0; i < snapshot.docs.length; i++) {
+          requests.push(snapshot.docs[i].data());
         }
       } else {
         setLastDoc(null);
@@ -122,13 +122,13 @@ const Discover = () => {
 
       <FlatList
         contentContainerStyle={styles.flatListContent}
-        data={Requests}
+        data={requests}
         numColumns={2} // Display two columns
         refreshControl={<RefreshControl refreshing={isReloading} onRefresh={onRefresh} />}
         onEndReached={getMoreRequests}
         onEndReachedThreshold={0.01}
         scrollEventThrottle={150}
-        keyExtractor={(item) => item.id.toString()} // Use a unique key for each item
+        keyExtractor={(item) => item.id} // Use a unique key for each item
         renderItem={({ item }) => (
           <View style={styles.itemContainer}>
             <TouchableOpacity
